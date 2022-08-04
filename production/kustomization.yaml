@@ -7,4 +7,4 @@ patchesStrategicMerge: []
 images:
   - name: keyholesoftware/now-playing-api
     newName: keyholesoftware/now-playing-api # {"$imagepolicy": "production:now-playing-api:name"}
-    newTag: 03eddaac-1659638323 # {"$imagepolicy": "production:now-playing-api:tag"}
+    newTag: 6ae11745-1659638394 # {"$imagepolicy": "production:now-playing-api:tag"}
