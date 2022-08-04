@@ -43,11 +43,6 @@ spec:
                 secretKeyRef:
                   name: now-playing-api-secret
                   key: tmdb_api_key
-            # - name: CREDITS_ENABLED
-            #   valueFrom:
-            #     configMapKeyRef:
-            #       name: now-playing-api-feature-flags
-            #       key: credits_enabled
           envFrom:
             - configMapRef:
                 name: now-playing-api-feature-flags
