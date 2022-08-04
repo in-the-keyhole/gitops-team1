@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: production
+resources:
+  - ../base
+patchesStrategicMerge: []
+images:
+  - name: keyholesoftware/now-playing-api
+    newName: keyholesoftware/now-playing-api # {"$imagepolicy": "production:now-playing-api:name"}
+    newTag: c2e72188-1658954597 # {"$imagepolicy": "production:now-playing-api:tag"}

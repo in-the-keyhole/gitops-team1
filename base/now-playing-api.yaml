@@ -1,0 +1,106 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  annotations:
+    sealedsecrets.bitnami.com/cluster-wide: "true"
+  creationTimestamp: null
+  name: now-playing-api-secret
+spec:
+  encryptedData:
+    tmdb_api_key: AgBscL2XMRToaZ3S++dCskH/U25v7kj4apaa9zga919dhWmgBk+LVL5JwzFYshwFr2cP/6vYWN5UOvRyhN9woxR+mx8bd8cTzEbzndpiPd07uCLLTOWJpRePwm6rUkbAYoWCAXvjLMzTLJ6psPSsk9BBePh87qZ464C+XBg8HjZ2MTeMekF2SgGQVzVolRTlLHTLwgOBxDAqhS/Xpe8hD5rzSroZlmIXAoM8GoUKGBJ21MmIvaoiNMEGdUcoRqSO5v7I7FU6X8mn8PVMAquPYdwa7QPvxY96IFaBlzVA2GzWVp4mjZ2NdcXGnanxIfEdyFgxFna6T1ZhBn0XVd9ik7FkwRFPOcN+h6tXxRHYy/sdfPMmSxVjan7SM2c6I3kd0jiBqxGXv6C7L6BnSpiLCamonvKzQEfRjGdhREbPeA3QU8HX2+Xo+WSiPHr0s0XmJ3Gejs13DvRF+V8WY3uxrUbuIEbCd9K5wr3g27rPd7orT17uinh7IGPZxIVD1CEZ4ZZmHCibeEW5bT7iVdZZJF9IA5oMHDbBIVL7cp3wdDByY9XeK4cYxrrDV7KIaLJ49fJx3pLpDFp+SEnO+GRvIKMIkKMsfHSCS3JejQAO+INuJA7X1D6EYaMdw223oBQKPIU+2gXss1E6mtgifz03GlPOisBA1MK3T1YbOEeIDmt/KOQ7b1PPoO0aKogL5fjJ/UB08P8RayWhXZpAe8XlXd2auEYIo7xV3jK0Or/pRY3GVA==
+  template:
+    data: null
+    metadata:
+      annotations:
+        sealedsecrets.bitnami.com/cluster-wide: "true"
+      creationTimestamp: null
+      name: now-playing-api-secret
+    type: Opaque
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: now-playing-api
+  namespace: staging
+spec:
+  selector:
+    matchLabels:
+      app: now-playing-api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: now-playing-api
+    spec:
+      containers:
+        - name: now-playing-api
+          image: >-
+            keyholesoftware/now-playing-api:01622775-1658837999
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TMDB_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: now-playing-api-secret
+                  key: tmdb_api_key
+            # - name: CREDITS_ENABLED
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: now-playing-api-feature-flags
+            #       key: credits_enabled
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: now-playing-api
+  namespace: staging
+spec:
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000
+  internalTrafficPolicy: Cluster
+  type: ClusterIP
+  sessionAffinity: None
+  selector:
+    app: now-playing-api
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: now-playing-api
+  namespace: staging
+spec:
+  to:
+    kind: Service
+    name: now-playing-api
+    weight: 100
+  port:
+    targetPort: 4000
+  tls:
+    termination: edge
+  wildcardPolicy: None
+---
+# Image repository to watch tags in
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageRepository
+metadata:
+  name: now-playing-api
+spec:
+  image: keyholesoftware/now-playing-api
+  interval: 1m0s
+---
+# In trunk-based development - using CD, the ImagePolicy can be the same across environments
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: now-playing-api
+spec:
+  filterTags:
+    pattern: "^[a-fA-F0-9]+-(?P<ts>.*)"
+    extract: "$ts"
+  policy:
+    numerical:
+      order: asc
+  imageRepositoryRef:
+    name: now-playing-api
