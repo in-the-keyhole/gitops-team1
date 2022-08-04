@@ -7,7 +7,7 @@ patchesStrategicMerge: []
 images: # The following configuration supports a Continuous Delivery model in k8s
   - name: keyholesoftware/now-playing-api
     newName: keyholesoftware/now-playing-api # {"$imagepolicy": "staging:now-playing-api:name"}
-    newTag: 9b65de8a-1659629908 # {"$imagepolicy": "staging:now-playing-api:tag"}
+    newTag: 03eddaac-1659637453 # {"$imagepolicy": "staging:now-playing-api:tag"}
 configMapGenerator:
   - name: now-playing-api-feature-flags
     behavior: replace
