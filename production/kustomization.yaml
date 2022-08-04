@@ -8,3 +8,8 @@ images:
   - name: keyholesoftware/now-playing-api
     newName: keyholesoftware/now-playing-api # {"$imagepolicy": "production:now-playing-api:name"}
     newTag: 57d17e0f-1659640095 # {"$imagepolicy": "production:now-playing-api:tag"}
+configMapGenerator:
+  - name: now-playing-api-feature-flags
+    behavior: replace
+    envs:
+      - now-playing-api-features.env
