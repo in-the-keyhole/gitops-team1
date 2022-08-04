@@ -48,6 +48,9 @@ spec:
             #     configMapKeyRef:
             #       name: now-playing-api-feature-flags
             #       key: credits_enabled
+          envFrom:
+            - configMapRef:
+                name: now-playing-api-feature-flags
 ---
 kind: Service
 apiVersion: v1

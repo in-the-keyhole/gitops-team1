@@ -8,8 +8,8 @@ images: # The following configuration supports a Continuous Delivery model in k8
   - name: keyholesoftware/now-playing-api
     newName: keyholesoftware/now-playing-api # {"$imagepolicy": "staging:now-playing-api:name"}
     newTag: c2e72188-1658954597 # {"$imagepolicy": "staging:now-playing-api:tag"}
-# configMapGenerator:
-#   - name: now-playing-api-feature-flags
-#     behavior: replace
-#     envs:
-#       - now-playing-api-features.env
+configMapGenerator:
+  - name: now-playing-api-feature-flags
+    behavior: replace
+    envs:
+      - now-playing-api-features.env
