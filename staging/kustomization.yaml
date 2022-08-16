@@ -2,14 +2,14 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: staging
 resources:
-#   - ../base
-# patchesStrategicMerge: []
-# images: # The following configuration supports a Continuous Delivery model in k8s
-#   - name: keyholesoftware/now-playing-api
-#     newName: keyholesoftware/now-playing-api # {"$imagepolicy": "staging:now-playing-api:name"}
-#     newTag: b0f7e2a0-1660244553 # {"$imagepolicy": "staging:now-playing-api:tag"}
-# configMapGenerator:
-#   - name: now-playing-api-feature-flags
-#     behavior: replace
-#     envs:
-#       - now-playing-api-features.env
+  - ../base
+patchesStrategicMerge: []
+images: # The following configuration supports a Continuous Delivery model in k8s
+  - name: keyholesoftware/now-playing-api
+    newName: keyholesoftware/now-playing-api # {"$imagepolicy": "staging:now-playing-api:name"}
+    newTag: 52828c2a-1660245849 # {"$imagepolicy": "staging:now-playing-api:tag"}
+configMapGenerator:
+  - name: now-playing-api-feature-flags
+    behavior: replace
+    envs:
+      - now-playing-api-features.env

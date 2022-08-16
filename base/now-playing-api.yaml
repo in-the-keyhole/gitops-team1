@@ -35,7 +35,7 @@ spec:
       containers:
         - name: now-playing-api
           image: >-
-            keyholesoftware/now-playing-api:01622775-1658837999
+            keyholesoftware/now-playing-api:52828c2a-1660245849
           imagePullPolicy: IfNotPresent
           env:
             - name: TMDB_API_KEY
