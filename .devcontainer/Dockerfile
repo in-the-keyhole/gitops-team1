@@ -29,3 +29,9 @@ RUN curl -L https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.
 RUN tar -zxvf kubeseal-0.18.0-linux-amd64.tar.gz kubeseal
 RUN mv kubeseal /usr/local/bin/kubeseal
 RUN rm kubeseal-0.18.0-linux-amd64.tar.gz
+
+# Install the k9s
+RUN curl -L https://github.com/derailed/k9s/releases/download/v0.26.3/k9s_Linux_x86_64.tar.gz -o k9s_Linux_x86_64.tar.gz
+RUN tar -zxvf k9s_Linux_x86_64.tar.gz k9s
+RUN mv k9s /usr/local/bin/k9s
+RUN rm k9s_Linux_x86_64.tar.gz
